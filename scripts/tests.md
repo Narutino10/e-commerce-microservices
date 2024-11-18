@@ -1,21 +1,31 @@
 # services/product-service
+
+```bash
 npm install --save-dev mongodb-memory-server @babel/core @babel/preset-env
 npm install --save-dev mongodb-memory-server
 npm install --save-dev cross-env
 npm test
 npm run lint
+```
 
 # services/order-service
+```bash
 npm test
+```
 
 # services/auth-service
+```bash
 npm test
+```
 
 # /frontend
+```bash
 npm run test
 npm run test:unit
 npm run test:coverage
 npm run lint:report || true
+```
+
 #### Auth Service
 
 - **Inscription d'un Nouvel Utilisateur**
@@ -126,14 +136,16 @@ curl -X POST http://localhost:3002/api/orders \
 ```
 
 # Utiliser un token en variable pour les tests
-
+```bash
 TOKEN=$(curl -X POST http://localhost:3001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"password123"}' \
   | jq -r '.token')
+```
 
 # Créer une commande
-# Créer une commande
+
+```bash
 curl -X POST http://localhost:3002/api/orders \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
@@ -148,11 +160,16 @@ curl -X POST http://localhost:3002/api/orders \
       "postalCode": "12345"
     }
   }'
+```
 
 # Récupérer les commandes
+```bash
 curl http://localhost:3002/api/orders \
   -H "Authorization: Bearer $TOKEN"
+```
 
 # Récupérer une commande spécifique
+```bash
 curl http://localhost:3002/api/orders/ID_COMMANDE \
   -H "Authorization: Bearer $TOKEN"
+```
