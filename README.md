@@ -34,9 +34,14 @@
     - [Comment Exécuter le Projet](#comment-exécuter-le-projet)
 
 ---
+
+# Documentation du Projet E-Commerce Microservices
+
+---
+
 ## Introduction
 
-Documentation détaillée du **Projet E-Commerce Microservices**. Ce projet est une application e-commerce basée sur une architecture microservices, conçue pour offrir modularité, scalabilité et maintenabilité. Cette documentation couvre la structure du projet, les composants individuels, les configurations nécessaires, les méthodes de déploiement, ainsi que les pratiques de développement et de test mises en œuvre.
+Documentation détaillée du **Projet E-Commerce Microservices**. Ce projet est une application e-commerce complète basée sur une architecture microservices, conçue pour offrir modularité, scalabilité et maintenabilité. Cette documentation couvre la structure du projet, les composants individuels, les configurations nécessaires, les méthodes de déploiement, ainsi que les pratiques de développement et de test mises en œuvre.
 
 ---
 
@@ -626,7 +631,8 @@ curl -X POST http://localhost:3000/api/cart/add \
 
 - **Passation d'une Commande**
 
-  ```bash
+
+```bash
 curl -X POST http://localhost:3002/api/orders \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzNiNmIyYzAyNTJmZDViZmU5OTdkYWMiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE3MzE5NDczNDYsImV4cCI6MTczMjAzMzc0Nn0.RcwtvVyp6gw15Zs8addBS25FzuqpqZmxp7OqwglFBG4" \
   -H "Content-Type: application/json" \
@@ -641,7 +647,8 @@ curl -X POST http://localhost:3002/api/orders \
       "postalCode": "12345"
     }
   }'
-  ```
+```
+
 
 ```json
 {"userId":"673b6b2c0252fd5bfe997dac","products":[{"productId":"673b6ba048c194f02ade2aba","name":"Enceinte Bluetooth","price":79,"quantity":1,"_id":"673b70050a40d45c0f920818"}],"totalAmount":79,"status":"pending","shippingAddress":{"street":"123 Test St","city":"Test City","postalCode":"12345"},"_id":"673b70050a40d45c0f920817","createdAt":"2024-11-18T16:49:09.281Z","__v":0}
@@ -650,10 +657,10 @@ curl -X POST http://localhost:3002/api/orders \
 
 - **Consultation de l'Historique des Commandes**
 
-  ```bash
+```bash
   curl -X GET http://localhost:3002/api/orders \
        -H "Authorization: Bearer <JWT_TOKEN>"
-  ```
+```
 
 ```json
 [{"shippingAddress":{"street":"123 Test St","city":"Test City","postalCode":"12345"},"_id":"673b70050a40d45c0f920817","userId":"673b6b2c0252fd5bfe997dac","products":[{"productId":"673b6ba048c194f02ade2aba","name":"Enceinte Bluetooth","price":79,"quantity":1,"_id":"673b70050a40d45c0f920818"}],"totalAmount":79,"status":"pending","createdAt":"2024-11-18T16:49:09.281Z","__v":0}]
