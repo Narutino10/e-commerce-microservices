@@ -34,16 +34,23 @@ test:
 # Étape 3 : Déploiement
 deploy:
   stage: deploy
-  image: alpine:latest
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
   before_script:
-    - apk add --no-cache openssh
     - mkdir -p ~/.ssh
     - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H <server_ip_or_hostname> >> ~/.ssh/known_hosts
   script:
-    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa user@server "docker stack deploy -c /path/to/docker-compose.prod.yml ecommerce_stack"
+    - scp ./docker-compose.prod.yml user@<server_ip_or_hostname>:/tmp/docker-compose.prod.yml
+    - ssh -i ~/.ssh/id_rsa user@<server_ip_or_hostname> "docker stack deploy -c /tmp/docker-compose.prod.yml ecommerce_stack"
   only:
     - main
+
 
 
 
