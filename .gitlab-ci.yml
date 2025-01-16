@@ -33,15 +33,23 @@ test:
 # Étape 3 : Déploiement
 deploy:
   stage: deploy
-  image: docker:latest
-  services:
-    - docker:dind
+  image: alpine:latest
   before_script:
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H server_domain_or_ip >> ~/.ssh/known_hosts
   script:
-    - echo "Deploying to production..."
-    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa user@server 'docker stack deploy -c docker-compose.prod.yml ecommerce_stack'
+    - ssh -i ~/.ssh/id_rsa user@server "docker stack deploy -c /path/to/docker-compose.prod.yml ecommerce_stack"
   only:
     - main
+
+
+
+deploy_staging:
+  stage: deploy
+  image: docker:latest
+  script:
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa user@staging-server "docker stack deploy -c /path/to/docker-compose.staging.yml ecommerce_stack"
+  only:
+    - staging
