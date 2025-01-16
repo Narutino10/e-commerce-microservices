@@ -36,14 +36,15 @@ deploy:
   stage: deploy
   image: alpine:latest
   before_script:
+    - apk add --no-cache openssh
     - mkdir -p ~/.ssh
     - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan -H server_domain_or_ip >> ~/.ssh/known_hosts
   script:
-    - ssh -i ~/.ssh/id_rsa user@server "docker stack deploy -c /path/to/docker-compose.prod.yml ecommerce_stack"
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa user@server "docker stack deploy -c /path/to/docker-compose.prod.yml ecommerce_stack"
   only:
     - main
+
 
 
 
