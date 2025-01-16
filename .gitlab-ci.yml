@@ -6,15 +6,22 @@ stages:
 # Étape 1 : Build
 build:
   stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
   script:
     - echo "Building the application..."
-    - docker-compose build
+    - docker-compose -f docker-compose.yml build
   only:
     - develop
 
 # Étape 2 : Tests
 test:
   stage: test
+  image: node:16
   script:
     - echo "Running tests..."
     - npm install
@@ -25,8 +32,15 @@ test:
 # Étape 3 : Déploiement
 deploy:
   stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
   script:
     - echo "Deploying to production..."
-    - ssh -i $SSH_PRIVATE_KEY user@server 'docker stack deploy -c docker-compose.yml ecommerce_stack'
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa user@server 'docker stack deploy -c docker-compose.prod.yml ecommerce_stack'
   only:
     - main
