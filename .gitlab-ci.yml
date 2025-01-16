@@ -37,24 +37,18 @@ deploy:
   image: docker:latest
   services:
     - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_TLS_CERTDIR: ""
   before_script:
     - mkdir -p ~/.ssh
     - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan -H <server_ip_or_hostname> >> ~/.ssh/known_hosts
+    - ssh-keyscan -H 162.19.78.55 >> ~/.ssh/known_hosts  # Assure-toi que l'IP est correcte
   script:
-    - scp ./docker-compose.prod.yml user@<server_ip_or_hostname>:/tmp/docker-compose.prod.yml
-    - ssh -i ~/.ssh/id_rsa user@<server_ip_or_hostname> "docker stack deploy -c /tmp/docker-compose.prod.yml ecommerce_stack"
+    - scp ./docker-compose.prod.yml ubuntu@162.19.78.55:/home/ubuntu/ecommerce/docker-compose.prod.yml
+    - ssh ubuntu@162.19.78.55 "cd /home/ubuntu/ecommerce && docker-compose -f docker-compose.prod.yml up -d"
   only:
     - main
 
-
-
-
-
+# Étape 4 : Déploiement Staging
 deploy_staging:
   stage: deploy
   image: docker:latest
