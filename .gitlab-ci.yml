@@ -48,6 +48,7 @@ deploy:
   only:
     - main
 
+
 # Étape 4 : Déploiement Staging
 deploy_staging:
   stage: deploy
