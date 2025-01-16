@@ -1,17 +1,18 @@
-
 stages:
   - build
   - test
   - deploy
 
+# Étape 1 : Build
 build:
   stage: build
   script:
-    - echo "Building Docker images..."
+    - echo "Building the application..."
     - docker-compose build
   only:
     - develop
 
+# Étape 2 : Tests
 test:
   stage: test
   script:
@@ -21,6 +22,7 @@ test:
   only:
     - develop
 
+# Étape 3 : Déploiement
 deploy:
   stage: deploy
   script:
