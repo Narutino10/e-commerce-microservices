@@ -1,1 +1,30 @@
 
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    - echo "Building Docker images..."
+    - docker-compose build
+  only:
+    - develop
+
+test:
+  stage: test
+  script:
+    - echo "Running tests..."
+    - npm install
+    - npm test
+  only:
+    - develop
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying to production..."
+    - ssh -i $SSH_PRIVATE_KEY user@server 'docker stack deploy -c docker-compose.yml ecommerce_stack'
+  only:
+    - main
